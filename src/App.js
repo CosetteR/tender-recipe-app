@@ -38,7 +38,7 @@ class App extends Component {
       newestRecipe:{recipeName: recipeName, description:description,
         ingredients: ingredients, procedure:procedure}
       });
-    }
+  }
 
     //Closes a modal
     close = () =>{
@@ -237,14 +237,15 @@ class App extends Component {
         </Modal.Footer>
         </Modal>
 
-        <Button variant="primary" onClick={(event)=>this.open("showAdd", currentIndex)}> Add Recipe </Button>
-        <Router>
-          <Switch>
-              <Route path="/recipe" component={Register}/>
-          </Switch>
-        </Router>
-      </div>
-    );
+          <Button variant="primary" onClick={(event)=>this.open("showAdd", currentIndex)}> Add Recipe </Button>
+          <Router>
+            <Switch>
+                <Route path="/recipe" component={Register}/>
+            </Switch>
+          </Router>
+        </div>
+      );
+    }
   }
 
   export default App;
