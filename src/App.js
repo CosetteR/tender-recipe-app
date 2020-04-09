@@ -11,6 +11,10 @@ class App extends Component {
   state ={
     recipes: [
       {recipeName: "Name1", description: "dummy text", ingredients: ["Ingredient1", "Ingredient2", "Ingredient3"],
+      procedure: ["Step1", "Step2", "Step3"]},
+      {recipeName: "Name2", description: "dummy text", ingredients: ["Ingredient1", "Ingredient2", "Ingredient3"],
+      procedure: ["Step1", "Step2", "Step3"]},
+      {recipeName: "Name3", description: "dummy text", ingredients: ["Ingredient1", "Ingredient2", "Ingredient3"],
       procedure: ["Step1", "Step2", "Step3"]}
     ],
     showAdd: false,
@@ -60,56 +64,24 @@ class App extends Component {
 
   render() {
     const {recipes, newestRecipe} = this.state;
-    console.log(newestRecipe);
     return (
       <div className = "App container">
-        {recipes.map((recipe, index)=>(
           <Accordion>
+          {recipes.map((recipe, index)=>(
             <Card>
               <Card.Header>
                   <Accordion.Toggle as ={Button} variant="link" eventKey = "0">
-                  General
+                  {recipe.recipeName}
                   </Accordion.Toggle>
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  <h2> {recipe.recipeName} </h2>
                   {recipe.description}
-                  <ButtonToolbar>
-                    <Button variant="default">Edit Section</Button>
-                  </ButtonToolbar>
-                </Card.Body>
-              </Accordion.Collapse>
-            </Card>
-
-            <Card>
-              <Card.Header>
-                <Accordion.Toggle as ={Button} variant="link" eventKey = "1">
-                Ingredients
-                </Accordion.Toggle>
-              </Card.Header>
-              <Accordion.Collapse eventKey="1">
-                <Card.Body>
                   <ol>
                    {recipe.ingredients.map((item)=>(
                      <li key={item}>{item}</li>
                    ))}
                   </ol>
-                  <ButtonToolbar>
-                    <Button variant="default">Edit Section</Button>
-                  </ButtonToolbar>
-                </Card.Body>
-              </Accordion.Collapse>
-            </Card>
-
-            <Card>
-              <Card.Header>
-                <Accordion.Toggle as ={Button} variant="link" eventKey = "2">
-                Procedure
-                </Accordion.Toggle>
-              </Card.Header>
-              <Accordion.Collapse eventKey="2">
-                <Card.Body>
                   <ol>
                    {recipe.procedure.map((item)=>(
                      <li key={item}>{item}</li>
@@ -121,8 +93,9 @@ class App extends Component {
                 </Card.Body>
               </Accordion.Collapse>
             </Card>
+            ))}
           </Accordion>
-          ))}
+
 
 
         <Modal show={this.state.showAdd} onHide={this.close}>
