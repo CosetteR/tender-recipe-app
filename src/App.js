@@ -22,10 +22,10 @@ class App extends Component {
   }
 
   //Deletes a recipe
-  deleteRecipe(){
-    this.setState({
-      newestRecipe:[]
-    });
+  deleteRecipe(index){
+    let recipes = this.state.recipes.slice();
+    recipes.splice(index, 1);
+    this.setState({recipes});
   }
 
   //Update newest Recipe.recipeName
@@ -38,27 +38,28 @@ class App extends Component {
 
   //Closes a modal
   close = () =>{
-    this.setState({showAdd: false})
+    if(this.state.showAdd){
+      this.setState({showAdd: false})
+    }
   }
 
   //Opens a modal
-  open = () =>{
-    this.setState({showAdd: true})
+  open = (state) =>{
+    this.setState({[state]: true});
   }
 
   //Saves a recipe
   save(){
-    this.setState({
-      recipes: [{
-        recipeName: this.state.newestRecipe.recipeName,
-        description:this.state.newestRecipe.description,
-        ingredients:this.state.newestRecipe.ingredients,
-        procedure:this.state.newestRecipe.procedure
-      }]
+    let recipes = this.state.recipes.slice();
+    recipes.push({
+      recipeName:this.state.newestRecipe.recipeName,
+      description:this.state.newestRecipe.description,
+      ingredients:this.state.newestRecipe.ingredients,
+      procedure:this.state.newestRecipe.procedure
     })
 
+    this.setState({recipes});
     this.setState({newestRecipe:{recipeName:'', description:'', ingredients:[], procedure:[]}})
-
     this.close();
   }
 
@@ -66,6 +67,7 @@ class App extends Component {
     const {recipes, newestRecipe} = this.state;
     return (
       <div className = "App container">
+          {recipes.length>0 &&(
           <Accordion>
           {recipes.map((recipe, index)=>(
             <Card>
@@ -87,11 +89,16 @@ class App extends Component {
                      <li key={item}>{item}</li>
                    ))}
                   </ol>
+                  <ButtonToolbar>
+                    <Button variant="default"> Edit Recipe </Button>
+                    <Button variant="danger" onClick={(event)=>this.deleteRecipe(index)}>Delete Recipe</Button>
+                  </ButtonToolbar>
                 </Card.Body>
               </Accordion.Collapse>
             </Card>
             ))}
           </Accordion>
+          )}
         <Modal show={this.state.showAdd} onHide={this.close}>
           <Modal.Header closeButton>
             <Modal.Title> Create Recipe </Modal.Title>
@@ -132,8 +139,7 @@ class App extends Component {
           </Modal.Footer>
         </Modal>
 
-        <Button variant="primary" onClick={(event)=>this.open()}>Add Recipe</Button>
-        <Button variant="danger" onClick={(event)=>this.deleteRecipe()}>Delete Recipe</Button>
+        <Button variant="primary" onClick={(event)=>this.open("showAdd")}> Add Recipe </Button>
 
       </div>
     );
