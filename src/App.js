@@ -70,11 +70,11 @@ class App extends Component {
           {recipes.map((recipe, index)=>(
             <Card>
               <Card.Header>
-                  <Accordion.Toggle as ={Button} variant="link" eventKey = "0">
+                  <Accordion.Toggle as ={Button} variant="link" eventKey = {index}>
                   {recipe.recipeName}
                   </Accordion.Toggle>
               </Card.Header>
-              <Accordion.Collapse eventKey="0">
+              <Accordion.Collapse eventKey={index}>
                 <Card.Body>
                   {recipe.description}
                   <ol>
@@ -87,17 +87,11 @@ class App extends Component {
                      <li key={item}>{item}</li>
                    ))}
                   </ol>
-                  <ButtonToolbar>
-                    <Button variant="default">Edit Section</Button>
-                  </ButtonToolbar>
                 </Card.Body>
               </Accordion.Collapse>
             </Card>
             ))}
           </Accordion>
-
-
-
         <Modal show={this.state.showAdd} onHide={this.close}>
           <Modal.Header closeButton>
             <Modal.Title> Create Recipe </Modal.Title>
@@ -138,7 +132,7 @@ class App extends Component {
           </Modal.Footer>
         </Modal>
 
-        <Button variant="primary" onClick={(event)=>this.open()}>Create Recipe</Button>
+        <Button variant="primary" onClick={(event)=>this.open()}>Add Recipe</Button>
         <Button variant="danger" onClick={(event)=>this.deleteRecipe()}>Delete Recipe</Button>
 
       </div>
