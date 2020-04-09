@@ -18,6 +18,8 @@ class App extends Component {
       procedure: ["Step1", "Step2", "Step3"]}
     ],
     showAdd: false,
+    showEdit: false,
+    currentIndex: 0,
     newestRecipe:{recipeName:"", description:"", ingredients:[], procedure:[]}
   }
 
@@ -32,118 +34,178 @@ class App extends Component {
   updateRecipe(recipeName, description, ingredients, procedure){
     this.setState({
       newestRecipe:{recipeName: recipeName, description:description,
-      ingredients: ingredients, procedure:procedure}
-    });
-  }
-
-  //Closes a modal
-  close = () =>{
-    if(this.state.showAdd){
-      this.setState({showAdd: false})
+        ingredients: ingredients, procedure:procedure}
+      });
     }
-  }
 
-  //Opens a modal
-  open = (state) =>{
-    this.setState({[state]: true});
-  }
+    //Closes a modal
+    close = () =>{
+      if(this.state.showAdd){
+        this.setState({showAdd: false})
+      }
+      else if(this.state.showEdit){
+        this.setState({showEdit: false})
+      }
+    }
 
-  //Saves a recipe
-  save(){
-    let recipes = this.state.recipes.slice();
-    recipes.push({
-      recipeName:this.state.newestRecipe.recipeName,
-      description:this.state.newestRecipe.description,
-      ingredients:this.state.newestRecipe.ingredients,
-      procedure:this.state.newestRecipe.procedure
-    })
+    //Opens a modal
+    open = (state, currentIndex) =>{
+      this.setState({[state]: true});
+      this.setState({currentIndex});
+    }
 
-    this.setState({recipes});
-    this.setState({newestRecipe:{recipeName:'', description:'', ingredients:[], procedure:[]}})
-    this.close();
-  }
+    //Saves a recipe
+    save(){
+      let recipes = this.state.recipes.slice();
+      recipes.push({
+        recipeName:this.state.newestRecipe.recipeName,
+        description:this.state.newestRecipe.description,
+        ingredients:this.state.newestRecipe.ingredients,
+        procedure:this.state.newestRecipe.procedure
+      })
 
-  render() {
-    const {recipes, newestRecipe} = this.state;
-    return (
-      <div className = "App container">
-          {recipes.length>0 &&(
+      this.setState({recipes});
+      this.setState({newestRecipe:{recipeName:'', description:'', ingredients:[], procedure:[]}})
+      this.close();
+    }
+
+    //Updates recipeName
+    updateRecipeName(recipeName, currentIndex){
+      let recipes = this.recipes.slice();
+      recipes[currentIndex] = {
+        recipeName: recipeName,
+        description: recipes[currentIndex].description,
+        ingredients: recipes[currentIndex].ingredients,
+        procedure: recipes[currentIndex].procedure
+      }
+      this.setState({recipes});
+    }
+
+    render() {
+      const {recipes, newestRecipe, currentIndex} = this.state;
+      return (
+        <div className = "App container">
+        {recipes.length>0 &&(
+          <div>
           <Accordion>
           {recipes.map((recipe, index)=>(
             <Card>
-              <Card.Header>
-                  <Accordion.Toggle as ={Button} variant="link" eventKey = {index}>
-                  {recipe.recipeName}
-                  </Accordion.Toggle>
-              </Card.Header>
-              <Accordion.Collapse eventKey={index}>
-                <Card.Body>
-                  {recipe.description}
-                  <ol>
-                   {recipe.ingredients.map((item)=>(
-                     <li key={item}>{item}</li>
-                   ))}
-                  </ol>
-                  <ol>
-                   {recipe.procedure.map((item)=>(
-                     <li key={item}>{item}</li>
-                   ))}
-                  </ol>
-                  <ButtonToolbar>
-                    <Button variant="default"> Edit Recipe </Button>
-                    <Button variant="danger" onClick={(event)=>this.deleteRecipe(index)}>Delete Recipe</Button>
-                  </ButtonToolbar>
-                </Card.Body>
-              </Accordion.Collapse>
-            </Card>
+            <Card.Header>
+            <Accordion.Toggle as ={Button} variant="link" eventKey = {index}>
+            {recipe.recipeName}
+            </Accordion.Toggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey={index}>
+            <Card.Body>
+            {recipe.description}
+            <ol>
+            {recipe.ingredients.map((item)=>(
+              <li key={item}>{item}</li>
             ))}
+            </ol>
+            <ol>
+            {recipe.procedure.map((item)=>(
+              <li key={item}>{item}</li>
+            ))}
+            </ol>
+            <ButtonToolbar>
+            <Button variant="default" onClick={(event)=>this.open("showEdit", index)}> Edit Recipe </Button>
+            <Button variant="danger" onClick={(event)=>this.deleteRecipe(index)}>Delete Recipe</Button>
+            </ButtonToolbar>
+            </Card.Body>
+            </Accordion.Collapse>
+            </Card>
+          ))}
           </Accordion>
-          )}
-        <Modal show={this.state.showAdd} onHide={this.close}>
+
+
+          <Modal show={this.state.showEdit} onHide={this.close}>
           <Modal.Header closeButton>
-            <Modal.Title> Create Recipe </Modal.Title>
+          <Modal.Title> Edit Recipe </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Group controlID="formBasicText">
-              <Form.Control
-              type="text"
-              value={newestRecipe.recipeName}
-              placeholder="Name"
-              onChange={(event)=> this.updateRecipe(event.target.value, newestRecipe.description, newestRecipe.ingredients, newestRecipe.procedure)}/>
-            </Form.Group>
-            <Form.Group controlID="formControlsTextarea">
-              <Form.Control
-              type="text"
-              value={newestRecipe.description}
-              placeholder="Brief Description"
-              onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, event.target.value, newestRecipe.ingredients, newestRecipe.procedure)}/>
-            </Form.Group>
-            <Form.Group controlID="formControlsTextarea">
-              <Form.Control
-              type="text"
-              value={newestRecipe.ingredients}
-              placeholder="Ingredients (Comma Separated)"
-              onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, event.target.value.split(","), newestRecipe.procedure)}/>
-            </Form.Group>
-            <Form.Group controlID="formControlsTextarea">
-              <Form.Control
-              type="text"
-              value={newestRecipe.procedure}
-              placeholder="Procedure (Comma Separated)"
-              onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, event.target.value.split(","))}/>
-            </Form.Group>
+          <Form.Group controlID="formBasicText">
+          <Form.Control
+          type="text"
+          value={recipes[currentIndex].recipeName}
+          placeholder="Name"
+          onChange={(event)=> this.updateRecipe(event.target.value, newestRecipe.description, newestRecipe.ingredients, newestRecipe.procedure)}/>
+          </Form.Group>
+          <Form.Group controlID="formControlsTextarea">
+          <Form.Control
+          type="text"
+          value={recipes[currentIndex].description}
+          placeholder="Brief Description"
+          onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, event.target.value, newestRecipe.ingredients, newestRecipe.procedure)}/>
+          </Form.Group>
+          <Form.Group controlID="formControlsTextarea">
+          <Form.Control
+          type="textArea"
+          value={recipes[currentIndex].ingredients}
+          placeholder="Ingredients (Comma Separated)"
+          onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, event.target.value.split(","), newestRecipe.procedure)}/>
+          </Form.Group>
+          <Form.Group controlID="formControlsTextarea">
+          <Form.Control
+          type="textArea"
+          value={recipes[currentIndex].procedure}
+          placeholder="Procedure (Comma Separated)"
+          onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, event.target.value.split(","))}/>
+          </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.close}> Close </Button>
-            <Button variant="primary" onClick={(event)=>this.save()}> Save Changes</Button>
+          <Button variant="secondary" onClick={this.close}> Close </Button>
+          <Button variant="primary" onClick={(event)=>this.save()}> Save Changes</Button>
           </Modal.Footer>
+          </Modal>
+        </div>
+        )}
+
+        <Modal show={this.state.showAdd} onHide={this.close}>
+        <Modal.Header closeButton>
+        <Modal.Title> Create Recipe </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Form.Group controlID="formBasicText">
+        <Form.Control
+        type="text"
+        value={newestRecipe.recipeName}
+        placeholder="Name"
+        onChange={(event)=> this.updateRecipe(event.target.value, newestRecipe.description, newestRecipe.ingredients, newestRecipe.procedure)}/>
+        </Form.Group>
+        <Form.Group controlID="formControlsTextarea">
+        <Form.Control
+        type="text"
+        value={newestRecipe.description}
+        placeholder="Brief Description"
+        onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, event.target.value, newestRecipe.ingredients, newestRecipe.procedure)}/>
+        </Form.Group>
+        <Form.Group controlID="formControlsTextarea">
+        <Form.Control
+        type="textarea"
+        value={newestRecipe.ingredients}
+        placeholder="Ingredients (Comma Separated)"
+        onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, event.target.value.split(","), newestRecipe.procedure)}/>
+        </Form.Group>
+        <Form.Group controlID="formControlsTextarea">
+        <Form.Control
+        type="textarea"
+        value={newestRecipe.procedure}
+        placeholder="Procedure (Comma Separated)"
+        onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, event.target.value.split(","))}/>
+        </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+        <Button variant="secondary" onClick={this.close}> Close </Button>
+        <Button variant="primary" onClick={(event)=>this.save()}> Save Changes</Button>
+        </Modal.Footer>
         </Modal>
 
         <Button variant="primary" onClick={(event)=>this.open("showAdd")}> Add Recipe </Button>
 
-      </div>
-    );
+        </div>
+      );
+    }
   }
-}
 
-export default App;
+  export default App;
