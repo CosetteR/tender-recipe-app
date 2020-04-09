@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button';
 import {ButtonToolbar} from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { Register } from './Register';
 
 class App extends Component {
   state ={
@@ -236,10 +238,13 @@ class App extends Component {
         </Modal>
 
         <Button variant="primary" onClick={(event)=>this.open("showAdd", currentIndex)}> Add Recipe </Button>
-
-        </div>
-      );
-    }
+        <Router>
+          <Switch>
+              <Route path="/recipe" component={Register}/>
+          </Switch>
+        </Router>
+      </div>
+    );
   }
 
   export default App;
