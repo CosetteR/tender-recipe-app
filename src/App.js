@@ -71,12 +71,46 @@ class App extends Component {
 
     //Updates recipeName
     updateRecipeName(recipeName, currentIndex){
-      let recipes = this.recipes.slice();
+      let recipes = this.state.recipes.slice();
       recipes[currentIndex] = {
         recipeName: recipeName,
         description: recipes[currentIndex].description,
         ingredients: recipes[currentIndex].ingredients,
         procedure: recipes[currentIndex].procedure
+      }
+      this.setState({recipes});
+    }
+
+    //Updates description
+    updateDescription(description, currentIndex){
+      let recipes = this.state.recipes.slice();
+      recipes[currentIndex] = {
+        recipeName: recipes[currentIndex].recipeName,
+        description: description,
+        ingredients: recipes[currentIndex].ingredients,
+        procedure: recipes[currentIndex].procedure
+      }
+      this.setState({recipes});
+    }
+
+    updateIngredients(ingredients, currentIndex){
+      let recipes = this.state.recipes.slice();
+      recipes[currentIndex] = {
+        recipeName: recipes[currentIndex].recipeName,
+        description: recipes[currentIndex].description,
+        ingredients: ingredients,
+        procedure: recipes[currentIndex].procedure
+      }
+      this.setState({recipes});
+    }
+
+    updateProcedure(procedure, currentIndex){
+      let recipes = this.recipes.slice();
+      recipes[currentIndex] = {
+        recipeName: recipes[currentIndex].recipeName,
+        description: recipes[currentIndex].description,
+        ingredients: recipes[currentIndex].ingredients,
+        procedure: procedure
       }
       this.setState({recipes});
     }
@@ -129,28 +163,28 @@ class App extends Component {
           type="text"
           value={recipes[currentIndex].recipeName}
           placeholder="Name"
-          onChange={(event)=> this.updateRecipe(event.target.value, newestRecipe.description, newestRecipe.ingredients, newestRecipe.procedure)}/>
+          onChange={(event)=> this.updateRecipeName(event.target.value, currentIndex)}/>
           </Form.Group>
           <Form.Group controlID="formControlsTextarea">
           <Form.Control
           type="text"
           value={recipes[currentIndex].description}
           placeholder="Brief Description"
-          onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, event.target.value, newestRecipe.ingredients, newestRecipe.procedure)}/>
+          onChange={(event)=> this.updateDescription(event.target.value, currentIndex)}/>
           </Form.Group>
           <Form.Group controlID="formControlsTextarea">
           <Form.Control
-          type="textArea"
+          type="textarea"
           value={recipes[currentIndex].ingredients}
           placeholder="Ingredients (Comma Separated)"
-          onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, event.target.value.split(","), newestRecipe.procedure)}/>
+          onChange={(event)=> this.updateIngredients(event.target.value.split(","), currentIndex)}/>
           </Form.Group>
           <Form.Group controlID="formControlsTextarea">
           <Form.Control
-          type="textArea"
+          type="textarea"
           value={recipes[currentIndex].procedure}
           placeholder="Procedure (Comma Separated)"
-          onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, event.target.value.split(","))}/>
+          onChange={(event)=> this.updateProcedure(event.target.value.split(","), currentIndex)}/>
           </Form.Group>
           </Modal.Body>
           <Modal.Footer>
@@ -201,7 +235,7 @@ class App extends Component {
         </Modal.Footer>
         </Modal>
 
-        <Button variant="primary" onClick={(event)=>this.open("showAdd")}> Add Recipe </Button>
+        <Button variant="primary" onClick={(event)=>this.open("showAdd", currentIndex)}> Add Recipe </Button>
 
         </div>
       );
