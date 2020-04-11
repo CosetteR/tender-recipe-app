@@ -6,7 +6,6 @@ import Button from 'react-bootstrap/Button';
 import {ButtonToolbar} from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 class Home extends Component {
   state ={
