@@ -11,16 +11,16 @@ class Home extends Component {
   state ={
     recipes: [
       {recipeName: "Name1", description: "dummy text", ingredients: ["Ingredient1", "Ingredient2", "Ingredient3"],
-      procedure: ["Step1", "Step2", "Step3"]},
+      procedure: ["Step1", "Step2", "Step3"], firstAnswer: "dummy", secondAnswer: "dummy", thirdAnswer: "dummy"},
       {recipeName: "Name2", description: "dummy text", ingredients: ["Ingredient1", "Ingredient2", "Ingredient3"],
-      procedure: ["Step1", "Step2", "Step3"]},
+      procedure: ["Step1", "Step2", "Step3"], firstAnswer: "dummy", secondAnswer: "dummy", thirdAnswer: "dummy"},
       {recipeName: "Name3", description: "dummy text", ingredients: ["Ingredient1", "Ingredient2", "Ingredient3"],
-      procedure: ["Step1", "Step2", "Step3"]}
+      procedure: ["Step1", "Step2", "Step3"], firstAnswer: "dummy", secondAnswer: "dummy", thirdAnswer: "dummy"}
     ],
     showAdd: false,
     showEdit: false,
     currentIndex: 0,
-    newestRecipe:{recipeName:"", description:"", ingredients:[], procedure:[]}
+    newestRecipe:{recipeName:"", description:"", ingredients:[], procedure:[], firstAnswer:"", secondAnswer:"", thirdAnswer:""}
   }
 
   //Deletes a recipe
@@ -31,10 +31,10 @@ class Home extends Component {
   }
 
   //Update newest Recipe.recipeName
-  updateRecipe(recipeName, description, ingredients, procedure){
+  updateRecipe(recipeName, description, ingredients, procedure, firstAnswer, secondAnswer, thirdAnswer){
     this.setState({
       newestRecipe:{recipeName: recipeName, description:description,
-        ingredients: ingredients, procedure:procedure}
+        ingredients: ingredients, procedure:procedure, firstAnswer:firstAnswer, secondAnswer:secondAnswer, thirdAnswer:thirdAnswer}
       });
   }
 
@@ -61,11 +61,14 @@ class Home extends Component {
         recipeName:this.state.newestRecipe.recipeName,
         description:this.state.newestRecipe.description,
         ingredients:this.state.newestRecipe.ingredients,
-        procedure:this.state.newestRecipe.procedure
+        procedure:this.state.newestRecipe.procedure,
+        firstAnswer:this.state.newestRecipe.firstAnswer,
+        secondAnswer:this.state.newestRecipe.secondAnswer,
+        thirdAnswer:this.state.newestRecipe.thirdAnswer
       })
 
       this.setState({recipes});
-      this.setState({newestRecipe:{recipeName:'', description:'', ingredients:[], procedure:[]}})
+      this.setState({newestRecipe:{recipeName:'', description:'', ingredients:[], procedure:[], firstAnswer:'', secondAnswer:'', thirdAnswer:''}})
       this.close();
     }
 
@@ -76,7 +79,11 @@ class Home extends Component {
         recipeName: recipeName,
         description: recipes[currentIndex].description,
         ingredients: recipes[currentIndex].ingredients,
-        procedure: recipes[currentIndex].procedure
+        procedure: recipes[currentIndex].procedure,
+        answers: recipes[currentIndex].answers,
+        firstAnswer: recipes[currentIndex].firstAnswer,
+        secondAnswer: recipes[currentIndex].secondAnswer,
+        thirdAnswer: recipes[currentIndex].thirdAnswer
       }
       this.setState({recipes});
     }
@@ -88,7 +95,10 @@ class Home extends Component {
         recipeName: recipes[currentIndex].recipeName,
         description: description,
         ingredients: recipes[currentIndex].ingredients,
-        procedure: recipes[currentIndex].procedure
+        procedure: recipes[currentIndex].procedure,
+        firstAnswer: recipes[currentIndex].firstAnswer,
+        secondAnswer: recipes[currentIndex].secondAnswer,
+        thirdAnswer: recipes[currentIndex].thirdAnswer
       }
       this.setState({recipes});
     }
@@ -99,7 +109,10 @@ class Home extends Component {
         recipeName: recipes[currentIndex].recipeName,
         description: recipes[currentIndex].description,
         ingredients: ingredients,
-        procedure: recipes[currentIndex].procedure
+        procedure: recipes[currentIndex].procedure,
+        firstAnswer: recipes[currentIndex].firstAnswer,
+        secondAnswer: recipes[currentIndex].secondAnswer,
+        thirdAnswer: recipes[currentIndex].thirdAnswer
       }
       this.setState({recipes});
     }
@@ -110,7 +123,52 @@ class Home extends Component {
         recipeName: recipes[currentIndex].recipeName,
         description: recipes[currentIndex].description,
         ingredients: recipes[currentIndex].ingredients,
-        procedure: procedure
+        procedure: procedure,
+        firstAnswer: recipes[currentIndex].firstAnswer,
+        secondAnswer: recipes[currentIndex].secondAnswer,
+        thirdAnswer: recipes[currentIndex].thirdAnswer
+      }
+      this.setState({recipes});
+    }
+
+    updateFirstAnswer(firstAnswer, currentIndex){
+      let recipes = this.recipes.slice();
+      recipes[currentIndex] = {
+        recipeName: recipes[currentIndex].recipeName,
+        description: recipes[currentIndex].description,
+        ingredients: recipes[currentIndex].ingredients,
+        procedure: recipes[currentIndex].procedure,
+        firstAnswer: firstAnswer,
+        secondAnswer: recipes[currentIndex].secondAnswer,
+        thirdAnswer: recipes[currentIndex].thirdAnswer
+      }
+      this.setState({recipes});
+    }
+
+    updateSecondAnswer(secondAnswer, currentIndex){
+      let recipes = this.recipes.slice();
+      recipes[currentIndex] = {
+        recipeName: recipes[currentIndex].recipeName,
+        description: recipes[currentIndex].description,
+        ingredients: recipes[currentIndex].ingredients,
+        procedure: recipes[currentIndex].procedure,
+        firstAnswer: recipes[currentIndex].firstAnswer,
+        secondAnswer: secondAnswer,
+        thirdAnswer: recipes[currentIndex].thirdAnswer
+      }
+      this.setState({recipes});
+    }
+
+    updateThirdAnswer(thirdAnswer, currentIndex){
+      let recipes = this.recipes.slice();
+      recipes[currentIndex] = {
+        recipeName: recipes[currentIndex].recipeName,
+        description: recipes[currentIndex].description,
+        ingredients: recipes[currentIndex].ingredients,
+        procedure: recipes[currentIndex].procedure,
+        firstAnswer: recipes[currentIndex].firstAnswer,
+        secondAnswer: recipes[currentIndex].secondAnswer,
+        thirdAnswer: thirdAnswer
       }
       this.setState({recipes});
     }
@@ -142,9 +200,12 @@ class Home extends Component {
               <li key={item}>{item}</li>
             ))}
             </ol>
+            {recipe.firstAnswer}
+            {recipe.secondAnswer}
+            {recipe.thirdAnswer}
             <ButtonToolbar>
             <Button variant="default" onClick={(event)=>this.open("showEdit", index)}> Edit Recipe </Button>
-            <Button variant="danger" onClick={(event)=>this.deleteRecipe(index)}>Delete Recipe</Button>
+            <Button variant="danger" onClick={(event)=>this.deleteRecipe(index)}> Delete Recipe </Button>
             </ButtonToolbar>
             </Card.Body>
             </Accordion.Collapse>
@@ -186,6 +247,30 @@ class Home extends Component {
           placeholder="Procedure (Comma Separated)"
           onChange={(event)=> this.updateProcedure(event.target.value.split(","), currentIndex)}/>
           </Form.Group>
+          <Form.Group controlID="formControlsTextarea">
+          <Form.Label> Where is this dish from? </Form.Label>
+          <Form.Control
+          type="textarea"
+          value={recipes[currentIndex].firstAnswer}
+          placeholder="This dish is from..."
+          onChange={(event)=> this.updateFirstAnswer(event.target.value, currentIndex)}/>
+          </Form.Group>
+          <Form.Group controlID="formControlsTextarea">
+          <Form.Label> What occasions are the best for this dish? </Form.Label>
+          <Form.Control
+          type="textarea"
+          value={recipes[currentIndex].secondAnswer}
+          placeholder="Everyday, friends' gathering, ..."
+          onChange={(event)=> this.updateSecondAnswer(event.target.value, currentIndex)}/>
+          </Form.Group>
+          <Form.Group controlID="formControlsTextarea">
+          <Form.Label> Favorite memory with this dish </Form.Label>
+          <Form.Control
+          type="textarea"
+          value={recipes[currentIndex].thirdAnswer}
+          placeholder="My mom taught me to cook this dish..."
+          onChange={(event)=> this.updateThirdAnswer(event.target.value, currentIndex)}/>
+          </Form.Group>
           </Modal.Body>
           <Modal.Footer>
           <Button variant="secondary" onClick={this.close}> Close </Button>
@@ -226,7 +311,31 @@ class Home extends Component {
         type="textarea"
         value={newestRecipe.procedure}
         placeholder="Procedure (Comma Separated)"
-        onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, event.target.value.split(","))}/>
+        onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, event.target.value.split(","), newestRecipe.firstAnswer, newestRecipe.secondAnswer, newestRecipe.thirdAnswer)}/>
+        </Form.Group>
+        <Form.Group controlID="formControlsTextarea">
+        <Form.Label> Where is this dish from? </Form.Label>
+        <Form.Control
+        type="textarea"
+        value={newestRecipe.firstAnswer}
+        placeholder="This dish is from..."
+        onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, newestRecipe.procedure, event.target.value, newestRecipe.secondAnswer, newestRecipe.thirdAnswer)}/>
+        </Form.Group>
+        <Form.Group controlID="formControlsTextarea">
+        <Form.Label> What occasions are the best for this dish? </Form.Label>
+        <Form.Control
+        type="textarea"
+        value={newestRecipe.secondAnswer}
+        placeholder="Everyday, friends' gathering, ..."
+        onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, newestRecipe.procedure, newestRecipe.firstAnswer, event.target.value, newestRecipe.thirdAnswer)}/>
+        </Form.Group>
+        <Form.Group controlID="formControlsTextarea">
+        <Form.Label> Favorite memory with this dish </Form.Label>
+        <Form.Control
+        type="textarea"
+        value={newestRecipe.thirdAnswer}
+        placeholder="My mom taught me to cook this dish..."
+        onChange={(event)=> this.updateRecipe(newestRecipe.recipeName, newestRecipe.description, newestRecipe.ingredients, newestRecipe.procedure, newestRecipe.firstAnswer, newestRecipe.secondAnswer, event.target.value)}/>
         </Form.Group>
         </Modal.Body>
         <Modal.Footer>
