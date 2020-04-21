@@ -36,3 +36,43 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  margin-top: 1.5em;
+}
+
+.accordion {
+  margin-bottom: 1.5em;
+}
+
+.card-body {
+  text-align: left;
+}
+
+.description {
+  margin-bottom: 1.3em;
+}
+
+.answers {
+  margin-bottom: 1.3em;
+}
+
+.firstAnswer {
+  margin-bottom: 1.3em;
+}
+
+.secondAnswer {
+  margin-bottom: 1.3em;
+}
+
+.thirdAnswer {
+  margin-bottom: 1.3em;
+}
+
+.btn-secondary {
+  margin-right: 0.5em;
+}
+
+.Intro {
+  margin-bottom: 1.5em;
+}
