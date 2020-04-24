@@ -8,12 +8,10 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-  const userName = req.body.userName;
   const recipeName = req.body.recipeName;
   const description = req.body.description;
   const ingredients = req.body.ingredients; //might need edits to accomodate for array
   const procedure = req.body.procedure;
-  const duration = Number(req.body.duration);
   const firstAnswer = req.body.firstAnswer;
   const secondAnswer = req.body.secondAnswer;
   const thirdAnswer = req.body.thirdAnswer;
@@ -24,7 +22,6 @@ router.route('/add').post((req, res) => {
     description,
     ingredients,
     procedure,
-    duration,
     firstAnswer,
     secondAnswer,
     thirdAnswer,
@@ -51,12 +48,10 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
   Recipe.findById(req.params.id) //getting info directly from url
     .then(recipe => {
-      recipe.userName = req.body.userName;
       recipe.recipeName = req.body.recipeName;
       recipe.description = req.body.description;
       recipe.ingredients = req.body.ingredients; //might need edits to accomodate for array
       recipe.procedure = req.body.procedure;
-      recipe.duration = Number(req.body.duration);
       recipe.firstAnswer = req.body.firstAnswer;
       recipe.secondAnswer = req.body.secondAnswer;
       recipe.thirdAnswer = req.body.thirdAnswer;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import { Register } from './Components/Register';
+import Register from './Components/Register';
 import CreateRecipe from './Components/CreateRecipe';
 import {RecipeBook} from './Components/RecipeBook';
 import {EditRecipe} from './Components/EditRecipe';
@@ -17,12 +17,14 @@ class App extends Component {
         <NavigationBar />
         <Layout>
           <Router>
-            <Switch>
-              <Route exact={true} path="/" component={RecipeBook}/>
-              <Route path="edit/:id" component = {EditRecipe} />
-              <Route path="/create" component={CreateRecipe} />
-              <Route path="/user" component={Register} />
-            </Switch>
+            <div className="container">
+              <Switch>
+                <Route exact={true} path="/" component={RecipeBook}/>
+                <Route path="edit/:id" component = {EditRecipe} />
+                <Route path="/create" component={CreateRecipe} />
+                <Route path="/user" component={Register} />
+              </Switch>
+            </div>
           </Router>
           </Layout>
         </React.Fragment>

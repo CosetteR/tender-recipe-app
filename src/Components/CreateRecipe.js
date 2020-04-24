@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import "../App.css";
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
@@ -9,12 +10,19 @@ import Form from 'react-bootstrap/Form';
 
 class CreateRecipe extends Component {
   state ={
-    recipes: [
-    ],
+    recipes: [],
     showAdd: false,
     showEdit: false,
     currentIndex: 0,
-    newestRecipe:{recipeName:"", description:"", ingredients:[], procedure:[], firstAnswer:"", secondAnswer:"", thirdAnswer:""}
+    newestRecipe: {
+      recipeName:"",
+      description:"",
+      ingredients:[],
+      procedure:[],
+      firstAnswer:"",
+      secondAnswer:"",
+      thirdAnswer:""
+    }
   }
 
   //Deletes a recipe
@@ -63,6 +71,10 @@ class CreateRecipe extends Component {
 
       this.setState({recipes});
       this.setState({newestRecipe:{recipeName:'', description:'', ingredients:[], procedure:[], firstAnswer:'', secondAnswer:'', thirdAnswer:''}})
+
+      //below is what links the two
+      //axios.post('http://localhost:5000/recipe/add', recipes)
+        //.then(res => console.log(res.data));
       this.close();
     }
 
@@ -169,12 +181,11 @@ class CreateRecipe extends Component {
 
     render() {
       const {recipes, newestRecipe, currentIndex} = this.state;
+      console.log(recipes);
       return (
-        <div className = "App container">
         <div className = "Intro">
           <h1> Create Your Recipe </h1>
           <p> Have an easy recipe that you're learning to make? Record the steps and share the memory with your friends and family! </p>
-        </div>
         {recipes.length>0 &&(
           <div>
           <Accordion>
@@ -358,7 +369,7 @@ class CreateRecipe extends Component {
         </Modal>
 
           <Button variant="primary" onClick={(event)=>this.open("showAdd", currentIndex)}> Add Recipe </Button>
-        </div>
+          </div>
       );
     }
   }
