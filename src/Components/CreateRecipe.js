@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./App.css";
+import "../App.css";
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -7,7 +7,7 @@ import {ButtonToolbar} from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
-class Home extends Component {
+class CreateRecipe extends Component {
   state ={
     recipes: [
     ],
@@ -363,4 +363,4 @@ class Home extends Component {
     }
   }
 
-  export default Home;
+  export default CreateRecipe;

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import { Register } from './Register';
-import Home from './Home';
+import { Register } from './Components/Register';
+import CreateRecipe from './Components/CreateRecipe';
+import {RecipeBook} from './Components/RecipeBook';
+import {EditRecipe} from './Components/EditRecipe';
 import {Layout} from './Components/Layout';
 import {NavigationBar} from './Components/NavigationBar';
 
@@ -16,8 +18,10 @@ class App extends Component {
         <Layout>
           <Router>
             <Switch>
-              <Route exact={true} path="/" component={Home}/>
-              <Route path="/recipe" component={Register}/>
+              <Route exact={true} path="/" component={RecipeBook}/>
+              <Route path="edit/:id" component = {EditRecipe} />
+              <Route path="/create" component={CreateRecipe} />
+              <Route path="/user" component={Register} />
             </Switch>
           </Router>
           </Layout>
