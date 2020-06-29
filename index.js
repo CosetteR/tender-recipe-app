@@ -1,0 +1,13 @@
+
+const express = require('express')
+const app = express()
+const port = 4000;
+const handle = require('./handlers');
+app.get('/', (req,res) => res.send('hello world'));
+
+app.use(handle.notfound);
+
+app.use(handle.errors);
+
+app.listen(port, console.log(`server started on port ${port}`));
+
